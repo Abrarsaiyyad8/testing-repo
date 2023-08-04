@@ -1,0 +1,68 @@
+import random
+
+# Define the Snakes and Ladders on the board
+snakes_and_ladders = {
+    4: 14,
+    9: 31,
+    17: 7,
+    20: 38,
+    28: 84,
+    40: 89,
+    51: 67,
+    63: 81,
+    64: 60,
+    89: 26,
+    95: 75,
+    99: 78
+}
+
+# Function to roll the dice
+def roll_dice():
+    return random.randint(1, 6)
+
+# Function to move the player on the board
+def move_player(player, dice_roll):
+    player += dice_roll
+    if player in snakes_and_ladders:
+        player = snakes_and_ladders[player]
+    return player
+
+# Function to check if the player won the game
+def check_win(player):
+    return player >= 100
+
+# Main game loop
+def play_game():
+    player1_position = 0
+    player2_position = 0
+    current_player = 1
+
+    while True:
+        input(f"Player {current_player}, press Enter to roll the dice...")
+        dice_roll = roll_dice()
+        print(f"Player {current_player} rolled a {dice_roll}.")
+
+        if current_player == 1:
+            player1_position = move_player(player1_position, dice_roll)
+            if player1_position > 100:
+                player1_position = 100
+        else:
+            player2_position = move_player(player2_position, dice_roll)
+            if player2_position > 100:
+                player2_position = 100
+
+        print(f"Player 1 position: {player1_position}")
+        print(f"Player 2 position: {player2_position}")
+
+        if check_win(player1_position):
+            print("Player 1 wins!")
+            break
+        elif check_win(player2_position):
+            print("Player 2 wins!")
+            break
+
+        if dice_roll != 6:
+            current_player = 3 - current_player  # Switch between Player 1 and Player 2
+
+if __name__ == "__main__":
+    play_game()
